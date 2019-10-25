@@ -693,12 +693,32 @@ export class HomePage implements OnInit  {
     // Get the location of you
     if(navigator.geolocation) {
       //this.array =[]
+      console.log('Why are you not running?');
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
+        let latitude = position.coords.latitude
+        console.log(latitude, 'latitude of user');
+        let longitude = position.coords.longitude
+        console.log(longitude);
+        
         var pos=[]
         pos.push({
-          location: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+          location: new google.maps.LatLng(latitude, longitude)
         });
-        let addressArray
+        console.log(pos[0].location, 'position');
+        
+
+
+        this.array.push(pos[0])
+        console.log(this.array, "zzz");
+        this.Lats = this.array[0].location.lat();
+        console.log( this.Lats, "weewewe");
+        this.Long = this.array[0].location.lng();
+
+        var locations = {lat: this.Lats, lng: this.Long}
+    console.log(locations, 'runninnnng');
+        this.start = locations
+        
         let marker = new google.maps.Marker({
           position: pos[0].location,
           zoom: 17,
@@ -733,7 +753,7 @@ export class HomePage implements OnInit  {
                  infoWindow.open(map)
           }
         })
-        console.log(infoWindowMarker.setContent(addressArray['street']))
+        //console.log(infoWindowMarker.setContent(addressArray['street']))
         console.log(marker,"marker selected")
 
 
@@ -863,9 +883,9 @@ export class HomePage implements OnInit  {
       
     
       // start for getting user location
-    var locations = {lat: this.Lats, lng: this.Long}
-    console.log(locations, 'runninnnng');
-    this.start = locations
+    // var locations = {lat: this.Lats, lng: this.Long}
+    // console.log(locations, 'runninnnng');
+    // this.start = locations
 
       //end for getting user destinations
       //end = this.destinations 
@@ -937,6 +957,7 @@ export class HomePage implements OnInit  {
   SearchPlaces(){
     console.log(this.myDest);
     console.log(this.myDest);
+    console.log(this.start);
     
     if(this.myDest === '') {
       this.autocompleteItemz = [];
@@ -955,6 +976,7 @@ export class HomePage implements OnInit  {
   
   getLocation(item){
     console.log(item);
+    this.autocompleteItemz = []
     let placeID = item['place_id']
     console.log(placeID);
     let currentLocation = this.start
